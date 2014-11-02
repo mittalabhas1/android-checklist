@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Checklist</string>
+    <string name="heading">Your Daily Checklist</string>
+    <string name="action_settings">Settings</string>
+    <string name="button">Add</string>
+    <string name="hint">Enter task here !</string>
+
+</resources>
