@@ -1,23 +1,27 @@
 package com.macchli.checklist;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 
-public class Main extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     TextView mainTextView;
     Button mainButton;
@@ -43,6 +47,7 @@ public class Main extends Activity implements View.OnClickListener {
                 android.R.layout.simple_list_item_1,
                 mainTaskList);
         mainListView.setAdapter(mainArrayAdapter);
+        mainListView.setOnItemClickListener(this);
     }
 
 
@@ -70,5 +75,30 @@ public class Main extends Activity implements View.OnClickListener {
         mainTaskList.add(mainEditText.getText().toString());
         mainEditText.setText("");
         mainArrayAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(AdapterView parent, View view, int position, long id) {
+        itemClicked(position);
+    }
+
+    private void itemClicked(final int position) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Are you sure to want to delete the item?");
+
+        alert.setPositiveButton("Yes, Delete!", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int whichButton) {
+                mainTaskList.remove(position);
+                mainArrayAdapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(), "Item successfully deleted!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {}
+        });
+
+        alert.show();
     }
 }
